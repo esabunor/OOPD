@@ -1,0 +1,23 @@
+Main:
+	INPUT gallons(Real)
+	wholegallons = truncate gallons
+	pints = getPints <-- gallons, wholegallons
+	ounces = getOunces <-- gallons, pints, ounces
+	OUTPUT gallons + " gallons is " + wholegallons + " pints " + pints + " and " + ounces + " ounces " 
+End Main
+
+SUBMODULE: getPints
+IMPORTS: gallons(Real), wholegallons(integer)
+EXPORT: pints(integer)
+ASSERTION:
+ALGORITHM:
+	pints =(convert to integer)( (gallons - (convert to real)wholegallons) * 3)
+
+SUBMODULE: getOunces
+IMPORTS: gallons(Real), wholegallons(integer), pints(integer)
+EXPORT: ounces(integer)
+ASSERTION: 
+ALGORITHM:
+	ounces =(((gallons - (convert to real)wholegallons) * 3) - (convert to real)pints) * 20 
+
+ 

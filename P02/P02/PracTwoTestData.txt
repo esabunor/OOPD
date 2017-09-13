@@ -1,0 +1,17 @@
+Circle				Rectangle				Triangle
+Diameter(cm)  Expected Output	Length(cm) Width(cm)  Expected output	Base(mm) Height(mm) Expected Output
+286           6m^2              1234.22    5314.2     655m^2            6352.3   2395.682    7m^2
+              4242cm^2                                8891cm^2                               6090cm^2
+              42.817mm^2                              92mm^2                                 45mm^2
+
+75            0m^2              563.23     8421.5     474m^2            4872.174 241.12      0m^2
+              4417cm^2                                3241cm^2                               5873cm^2
+              36.46mm^2                               44.5mm^2                               89.29cm^2
+
+391           12m^2             5478.14    2548.36    1396m^2           483.41   3893.6      0m^2
+              72cm^2                                  272cm^2                                9411cm^2
+              45.66mm^2                               85mm^2                                 2.5mm^2
+
+562           24m^2             1425.36    45.26      6m^2              3659.25  3681.15     6m^2
+              8063cm^2                                4511cm^2                               7351cm^2
+              29.75mm^2                               79mm^2                                 24mm^2

@@ -1,0 +1,42 @@
+SUBMODULE: truncate
+IMPORTS: number(Real)
+EXPORT: truncation(String)
+ALSORITHM:
+	m:= number DIV 10000
+	cm:= number MOD 10000
+	mm:= (number - (m * 10000) - cm) * 100
+OUTPUT m + "m^2, " + cm + "cm^2, " + mm + "mm^2."
+
+
+SUBMODULE: circle
+IMPORTS: diameter(Integer)
+EXPORT: area(Real)
+ALGORITHM:
+	area:= (((Convert to Real) diameter/2.0)^2 ) * pi)
+OUTPUT area
+
+
+SUBMODULE: triangle
+IMPORTS: base(Real), heigth(Real)
+EXPORT: area(Real)
+ALGORITHM:
+	area:= (0.5 * base * height) /100
+OUTPUT area
+
+
+SUBMODULE: rectangle
+IMPORTS: length(Real), width(Real)
+EXPORT: area(Real)
+ALGORITHM:
+	area:= longth * width
+OUTPUT area
+
+
+Main:
+	INPUT diameter(Integer)
+	INPUT length(Real), width(Real)
+	INPUT base(Real), height(Real)
+	truncate <== circle <-- diameter
+	truncate <-- rectangle <-- length, width
+	truncate <-- triangle <-- base, height
+END Main

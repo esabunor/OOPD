@@ -1,0 +1,31 @@
+a.)(int) bashful - grumpy / 100
+
+(int) bashful = 14
+grumpy / 100 = 18
+
+14 - 18 = -3
+
+b.) sneezy + sleepy 
+sneezy = "hiho,hiho"
+sleepy = 1.73205
+
+c.) (double) ((grumpy - 30) % dopey)
+grumpy - 30 = 151
+
+151 %  5 = 1
+
+d.) (int) (bashful + sleepy) * 2 - dopey / 2 - 1
+bashful + sleepy = 16.13205
+(int) bashful + sleepy  = 16
+(int)(bashful + sleepy) * 2  = 32
+dopey / 2 = 2
+(int)(bashful + sleepy) * 2 - 2 = 30
+30 + 1 = 31
+
+e.) ((grumpy % 4 == 0) && ((sleepy > 1.73205) || (bashful / 10.0 > 1.9)))
+ (grumpy % 4 == 0)  = false // grumpy % 4 = 1
+(sleepy > 1.73205) = false // sleepy = 1.73205
+(bashful / 10.0 > 1.9) = true // bashful / 10.0 = 1,44 is > 1.0
+(false && (false || true) ) = false
+
+

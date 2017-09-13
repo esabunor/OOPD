@@ -1,0 +1,49 @@
+
+Main:
+	numOne := integerInput <- "enter the first number"
+	numTwo := integerInput <- "enter the second number"
+	error := checkNumbers <- numOne, numTwo
+	divisibilityOutput <- divisionChecker <-( numOne, numTwo ), error
+	
+End Main
+
+SUBMODULE: integerInput
+INPUT: message(String)
+OUTPUT: number(Integer)
+ASSERTION:
+ALGORITHM:
+	OUTPUT message
+	INPUT number
+
+SUBMODULE: divisionChecker
+INPUT: numOne, numTwo
+OUTPUT: divisible(boolean)
+ASSERTION: 
+ALGORITHM: 
+	IF numOne MOD numTwo = 0 THEN
+		divisible := true
+	ELSE
+		divisible := false
+	ENDIF
+
+SUBMODULE: divisibilityOutput
+INPUT: divisible(boolean), error(boolean)
+OUTPUT: none
+ASSERTION:
+ALGORITHM:
+	IF divisible = false and error = false THEN
+		OUTPUT "Divisible"
+	ElSE
+		OUTPUT "Not Divisible"
+	ENDIF
+
+SUBMODULE: checkNumbers
+INPUT: numOne(Integer), numTwo(Integer)
+OUTPUT: error(boolean)
+ASSERTION:
+ALGORITHM:
+	IF numOne = 0 OR numTwo = 0 THEN
+		error = true
+	ELSE
+		error = false
+	ENDIF

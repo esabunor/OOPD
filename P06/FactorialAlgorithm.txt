@@ -1,0 +1,35 @@
+Main:
+	outputFactorial <- factorial <- inputFactorial 
+End Main
+
+SUBMODULE: factorial
+IMPORT: number(integer)
+EXPORT: factorial(integer)
+ASSERTION: 
+ALGORITHM:
+	factorial = 1
+	FOR number DOWN TO 1
+		factorial = number * factorial
+	ENDFOR
+
+SUBMODULE: outputFactorial
+IMPORT: factorial(integer)
+EXPORT: none
+ASSERTION:
+ALGORITHM:
+	OUTPUT "factorial is " + factorial
+
+SUBMODULE: inputInteger
+IMPORT: none
+EXPORT: number(integer)
+ASSERTION:
+ALGORITHM:
+	OUTPUT "please enter the number to calculate its factorial"
+	INPUT number(integer)
+
+SUBMODULE: validateInput
+IMPORT: number(integer)
+EXPORT: none
+ASSERTION: 
+ALGORITHM:
+	pass 
