@@ -26,10 +26,9 @@ ASSERTION:
 ALGORITHM:
 	OUTPUT "please enter the number to calculate its factorial"
 	INPUT number(integer)
+	WHILE number < 1 DO
+		OUTPUT "provide an integer greater than 1"
+		INPUT number
+	ENDWHILE
+	
 
-SUBMODULE: validateInput
-IMPORT: number(integer)
-EXPORT: none
-ASSERTION: 
-ALGORITHM:
-	pass 

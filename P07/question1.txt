@@ -1,0 +1,10 @@
+1. WHILE beans < 12 DO
+	beans is never reassigned therefore it is aan infinite loop
+
+2. beans / avocado 
+  could create zero division error 
+
+3. chile < 0 and chile > 10
+  no number exists that lies in this range
+
+

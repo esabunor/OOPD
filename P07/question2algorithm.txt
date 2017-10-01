@@ -1,0 +1,22 @@
+SUBMODULE:  grade
+IMPORT: mark(integer)
+EXPORTS: grade(Character)
+ASSERTION: 
+ALGORITHM:
+	CASE mark/10:
+	case 10:
+		grade = 'N'
+	case 9, 8:
+		grade = 'H'
+	case 7:
+		grade = 'D'
+	case 6:
+		grade = 'C'
+	case 5:
+		grade = 'P'
+	case 4, 3, 2, 1, 0:
+		grade = 'F'
+	default:
+		grade = 'N'
+	END CASE
+
