@@ -1,0 +1,66 @@
+SUBMODULE: factorial
+IMPORTS: number
+EXPORT: factorial
+ASSERTIONS: 
+ALGORITHM:
+	factorial = 1
+	FOR i=1 to number CHANGEBY 1:
+		factorial = factorial * 1
+	ENDFOR	
+
+SUBMODULE: inverse
+IMPORTS: number 
+EXPORT; inverse
+ASSERTIONS:
+ALGORITHMS:
+	inverse = 1 / number
+
+SUBMODULE:calculateE
+IMPORTS:array
+EXPORT:array
+ASSERTION:
+ALGORITHM:
+	sum = 0
+	FOR i = 0 TO (LENGTH of array) - 1  CHANGEBY 1:
+		sum += array[i]
+	ENDFOR
+	array[(LENGTH of array) -1] = sum 
+
+SUBMODULE:storeInArray
+INPORTS: number 
+EXPORT:array
+ASSERTIONS:
+ALGORITHM:
+	array(ARRAY of Integer) size number + 1
+	array[0] = 1
+	FOR i = 1 TO number  CHANGEBY 1:
+		array[i] = inverse(factorial(i))
+	ENDFOR
+
+SUBMODULE: outputArray
+IMPORTS; array
+EXPORT: none
+ASSERTIONS:
+ALGORITHM:
+	FOR i = 0 TO (LENGTH of array)- 1 CHANGEBY 1:
+		OUTPUT array[i]
+	ENDFOR
+
+SUBMODULE: getN
+IMPORTS: none
+EXPORT: n(Integer)
+ASSERTION:
+ALGORITHM:
+	OUTPUT "please provide a value for n between 6 and 100 inclusive"
+	INPUT n
+	WHILE n < 6 or n > 100 DO:
+		OUTPUT "please provide a value for n between 6 and 
+		INPUT n
+	ENDWHILE
+
+MAIN:
+	outputArray <- calculateE <- storeInArray <- getN
+ENDMAIN
+
+
+
