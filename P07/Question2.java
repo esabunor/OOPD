@@ -23,5 +23,6 @@ public static char grade(int mark)
 		default:
 			grade = 'N';
 	}
+	return grade;
 }
 
