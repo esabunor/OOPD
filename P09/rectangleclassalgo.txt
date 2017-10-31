@@ -1,0 +1,105 @@
+CLASS Rectangle
+
+CLASSFIELD:
+    length (Real)
+    width (Real)
+    area (Real)
+
+DEFAULT CONSTRUCTOR:
+    length = 0.0
+    width = 0.0
+    area = 0.0
+
+ALTERNATE CONSTRUCTOR:
+IMPORTS: length (Real), width (Real)
+ALGORITHM: 
+    length = validateLength<-inLength
+    width = validateWidth<-inWidth
+    setArea<- calcArea <- length, width
+
+COPY CONSTRUCTOR:
+IMPORTS: inRectangle (Rectangle)
+ALGORITHM:
+    length = inRectangle.getLenght<-None
+    width = inRectangle.getWidth<-None
+    setArea<- calcArea <- length, width
+
+ACCESSOR getArea
+IMPORTS: None
+EXPORT: area
+
+ACCESSOR getWidth
+IMPORTS: None
+EXPORT: width
+
+ACCESSOR getLenght
+IMPORTS: None
+EXPORT: length
+
+MUTATOR setLenght
+IMPORTS inLength
+EXPORT: None
+ALGORITHM:
+    lenght = validateLength<-inLength
+
+MUTATOR setWidth
+IMPORTS: inWidth
+EXPORT: None
+ALGORITHM:
+    width - validateWidth<-inWidth
+
+MUTATOR setArea
+IMPORTS: inArea
+EXPORT: None
+ALGORITHM:
+    area = inArea
+
+clone
+IMPORTS: None
+EXPORT: outRectangle
+ALGORITHM: 
+	construct outRectangle using this
+
+equals
+IMPORTS: inRectangle (Object)
+EXPORT: isEqual (Boolean)
+ALGORITHM:
+    isEqual = false
+    Rectangle = (Convert to Rectangle)inRectangle
+    IF Rectangle is an instance of Rectangle THEN:
+        IF Rectangle.getArea == area THEN:
+            IF Rectangle.getLenght == lenght THEN:
+                IF Rectangle.getWidth == width THEN:
+                    isEqual = true
+                ENDIF
+            ENDIF
+        ENDIF
+    ENDIF
+
+toString
+IMPORTS: None
+EXPORT: triString (String)
+ALGORITHM: 
+	triString = "width: " + width + "lenght: " + lenght + " area: " + area
+
+SUBMODULE: calcArea
+IMPORTS: lenght (Real), width (Real)
+EXPORT: area
+ALGORITHM: 
+    area = lenght * width
+
+SUBMODULE: validatelenght
+IMPORTS: lenght (Real)
+EXPORT: lenght
+ALGORITHM:
+    IF lenght < 0 THEN:
+        FAIL "lenght cant be less than 0"
+    ENDIF
+
+SUBMODULE: validatewidth
+IMPORTS: width (Real)
+EXPORT: width
+ALGORITHM:
+    IF width < 0 THEN:
+        FAIL "width cant be less than 0"
+    ENDIF

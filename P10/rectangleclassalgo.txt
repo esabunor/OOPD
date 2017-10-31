@@ -1,0 +1,94 @@
+CLASS Rectangle inherits from Shape
+
+CLASSFIELD:
+    length (Real)
+    width (Real)
+
+DEFAULT CONSTRUCTOR:
+    super<-None
+    length = 0.0
+    width = 0.0
+
+ALTERNATE CONSTRUCTOR:
+IMPORTS: length (Real), width (Real)
+ALGORITHM: 
+    super<-None
+    length = validateLength<-inLength
+    width = validateWidth<-inWidth
+
+COPY CONSTRUCTOR:
+IMPORTS: inRectangle (Rectangle)
+ALGORITHM:
+    super<-inRectangle
+    length = inRectangle.getLenght<-None
+    width = inRectangle.getWidth<-None
+
+ACCESSOR getWidth
+IMPORTS: None
+EXPORT: width
+
+ACCESSOR getLenght
+IMPORTS: None
+EXPORT: length
+
+MUTATOR setLenght
+IMPORTS inLength
+EXPORT: None
+ALGORITHM:
+    lenght = validateLength<-inLength
+
+MUTATOR setWidth
+IMPORTS: inWidth
+EXPORT: None
+ALGORITHM:
+    width - validateWidth<-inWidth
+
+clone
+IMPORTS: None
+EXPORT: outRectangle
+ALGORITHM: 
+	construct outRectangle using this
+
+equals
+IMPORTS: inRectangle (Object)
+EXPORT: isEqual (Boolean)
+ALGORITHM:
+    isEqual = false
+    Rectangle = (Convert to Rectangle)inRectangle
+    IF Rectangle is an instance of Rectangle THEN:
+        IF Rectangle.getArea == area THEN:
+            IF Rectangle.getLenght == lenght THEN:
+                IF Rectangle.getWidth == width THEN:
+                    isEqual = true
+                ENDIF
+            ENDIF
+        ENDIF
+    ENDIF
+
+toString
+IMPORTS: None
+EXPORT: triString (String)
+ALGORITHM: 
+	triString = "width: " + width + "lenght: " + lenght + " area: " + area
+
+SUBMODULE: calcArea
+IMPORTS: None
+EXPORT: area
+ALGORITHM: 
+    area = lenght * width
+
+SUBMODULE: validatelenght
+IMPORTS: lenght (Real)
+EXPORT: lenght
+ALGORITHM:
+    IF lenght < 0 THEN:
+        FAIL "lenght cant be less than 0"
+    ENDIF
+
+SUBMODULE: validatewidth
+IMPORTS: width (Real)
+EXPORT: width
+ALGORITHM:
+    IF width < 0 THEN:
+        FAIL "width cant be less than 0"
+    ENDIF

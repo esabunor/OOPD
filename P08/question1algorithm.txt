@@ -1,0 +1,108 @@
+SUBMODULE: processLine
+IMPORTS: csvRow, arrayOfNames, arrayOfScores, lineNumber
+EXPORT: none
+ASSERTION:
+ALGORITHM:
+	thisToken (String)
+	Construct tokeniser USING csvRow, ‘, ‘
+	FOR i = 0 tokeniser<-hasMoreTokens CHANGEBY 1:
+		thisToken = tokeniser<-nextToken
+		IF i == 0 THEN:
+			arrayOfNames[lineNumber - 1]
+		ELSE:
+			arrayOfScores[lineNumber - 1]
+	ENDFOR	
+		
+
+SUBMODULE: getNumLines
+IMPORTS: filename
+EXPORT: numLines
+ASSERTION:
+ALGORITHM:
+	file = OPENFILE filename
+	IF file CANT BE OPENED THEN:
+		FAIL ( THROW EXCEPTION)
+	ENDIF
+	numLines = 0
+	INPUT line FROM file
+	
+	WHILE (line NOT EOF) DO:
+		numLines = numLines + 1
+		INPUT line FROM file
+	ENDWHILE
+	
+	CLOSEFILE file
+
+SUBMODULE: populateArrays
+IMPORTS: filename, arrayOfNames, arrayOfScores
+EXPORT: none
+ASSERTION:
+ALGORITHM:
+	numLines = getNumLines<- filename
+	arrayOfNames = (ARRAY of Strings size numLines)
+	arrayOfScores = (ARRAY of Integers size numLines)
+	
+	file = OPENFILE filename
+	IF file CAN’T BE OPENED THEN:
+		FAIL ( THROW EXCEPTION)
+	ENDIF
+
+	FOR i = 1 TO numLines CHANGEBY 1:
+		INPUT line FROM file
+		processLine<- line, arrayOfNames, arrayOfScores, i
+	ENDFOR
+	CLOSEFILE file
+
+SUBMODULE: displayMenu
+IMPORTS: arrayOfNames, arrayOfScores
+EXPORT: none
+ASSERTION:
+ALGORITHM:
+	OUTPUT “Select an option:”
+	OUTPUT “1. Display mark”
+	OUTPUT “2. Exit”
+	choice = valldateInput
+	IF choice == 1 THEN:
+		search<- arrayOfNames, arrayOfScores
+
+SUBMODULE: validateInput
+IMPORTS: arrayOfScores, arrayOfNames
+EXPORT: choice(Integer)
+ASSERTION:
+ALGORITHM:
+	INPUT choice
+	WHILE NOT choice == 1 OR choice == 2 DO :
+		OUTPUT “invalid choice”
+		displayMenu<-arrayOfScores, arrayOfNames
+		INPUT choice
+	ENDWHILE
+
+SUBMODULE: search
+IMPORTS: arrayOfScores, arrayOfNames
+EXPORT: none
+ASSERTION:
+ALGORITHM:
+	OUTPUT “Please provide the name of the student”
+	INPUT name
+	index = -1
+	FOR i = 0 TO (LENGTH OF arrayOfNames - 1) CHANGEBY 1:
+		IF arrayOfNames[I] == name THEN:
+			index = i
+	ENDFOR
+	IF index == -1 THEN:
+		OUTPUT “No results found”
+	ELSE:
+		OUTPUT arrayOfName[index] + “ mark is “ + arrayOfScores[index]
+	displayMenu<- arrayOfNames, arrayOfScores
+
+Main:
+	arrayOfScores(Array of Real)
+	arrayOfNames(Array of String)
+	populateArrays<- ‘marks_file.csv’, arrayOfNames, arrayOfScores
+	displayMenu<- arrayOfNames, arrayOfScores
+ENDMAIN
+
+	
+
+	
+

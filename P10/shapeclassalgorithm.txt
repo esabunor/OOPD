@@ -1,0 +1,68 @@
+CLASS Triangle
+
+CLASSFIELD:
+    fillColour (String)
+    lineColour (String)
+    area = (Real)
+
+DEFAULT CONSTRUCTOR:
+    fillColour = "ffffff"
+    lineColour = "ffffff"
+    area = 0.0
+
+ALTERNATE CONSTRUCTOR:
+IMPORTS: fillColour (String), lineColour (String)
+ALGORITHM: 
+    fillColour = "ffffff"
+    lineColour = "ffffff"
+    area = 0.0
+
+COPY CONSTRUCTOR:
+IMPORTS: other (Shape)
+ALGORITHM:
+    setFillColour<-other.getFillColour
+    setLineColour<-other.getLineColour   
+    area = other.getArea
+
+ACCESSOR getLineColour
+IMPORTS: None
+EXPORT: lineColour
+
+ACCESSOR getFillColour
+IMPORTS: None
+EXPORT: lineColour
+
+MUTATOR setFillColour
+IMPORTS fillColour
+EXPORT: None
+ALGORITHM:
+    fillColour = validateColour<-fillColour
+
+MUTATOR setLineColour
+IMPORTS lineColour
+EXPORT: None
+ALGORITHM:
+    lineColour = validateColour<-lineColour
+
+MUTATOR setArea
+IMPORTS: inArea
+EXPORT: None
+ALGORITHM:
+    area = inArea
+
+
+SUBMODULE: abstract calcArea
+IMPORTS: None
+EXPORT: area
+ALGORITHM: None
+
+SUBMODULE: validateColour
+IMPORTS: colour (String)
+EXPORT: colour (String)
+ALGORITHM:
+    i = null
+
+    IF colour is not Hex String THEN:
+        Fail "Illegal argument exception"
+    ENDIF
+    colour = colour

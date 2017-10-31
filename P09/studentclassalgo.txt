@@ -1,0 +1,73 @@
+CLASS Student
+
+CLASSFIELD:
+	name (String)
+	mark (Real)
+
+DEFAULT CONSTRUCTOR:
+	name = “blank”
+	mark = 0.0
+
+ALTERNATE CONSTRUCTOR:
+IMPORTS: inName (String), inMark (Real)
+ALGORITHM:
+	name = inName
+	mark = inMark
+
+COPY CONSTRUCTOR
+IMPORTS: inStudent (Student)
+ALGORITHM: 
+	name = inStudent.getName<-None
+	mark = inStudent.getMark<-None
+
+ACCESSOR getName
+IMPORTS: None
+EXPORT: name (String)
+
+MUTATOR setName
+IMPORTS: inName (String)
+EXPORT: None
+ALGORITHM:
+	IF inName != ""
+		FAIL "Name cannot be empty"
+	ENDIF
+	name = inName
+
+ACCESSOR getMark
+IMPORTS: None
+EXPORT: mark (Real)
+
+MUTATOR setMark
+IMPORTS: inMark (Real)
+EXPORT: None
+ALGORITHM:
+	IF inMark < 0.0 THEN:
+		FAIL "mark cant be lower than 0"
+	ENDIF
+	mark = inMark
+
+equals
+IMPORTS: inStudent (Object)
+EXPORT: isEqual (Boolean)
+ALGORITHM:
+	isEqual = false
+	student = (Convert to Student) inStudent
+	IF student is an instance of Student THEN:
+		IF name == student.getName THEN:
+			IF mark == student.getMark THEN:
+				isEqual = true
+			ENDIF
+		ENDIF
+	ENDIF
+	
+toString
+IMPORTS: None
+EXPORT: studentString (String)
+ALGORITHM: 
+	studentString = "Name: " + name + " Mark: " + mark
+
+clone
+IMPORTS: None
+EXPORT: outStudent
+ALGORITHM: 
+	construct outStudent using this

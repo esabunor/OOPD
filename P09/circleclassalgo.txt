@@ -1,0 +1,81 @@
+CLASS Circle
+
+CLASSFIELD:
+    diameter (Integer)
+    area (Real)
+
+DEFAULT CONSTRUCTOR:
+    area = 0.0
+    diameter = 0
+
+ALTERNATE CONSTRUCTOR:
+IMPORTS: diameter (Integer)
+ALGORITHM: 
+    validateDiameter<-inDiameter
+    area = calcArea<-validateDiameter<-inDiameter
+    setArea(area)
+
+COPY CONSTRUCTOR:
+IMPORTS: inCircle (Circle)
+ALGORITHM:
+    diameter = inCircle.getDiameter
+    area = inCircle.getArea
+
+ACCESSOR getArea
+IMPORTS: None
+EXPORT: area
+
+ACCESSOR getDiameter
+IMPORTS: None
+EXPORT: diameter
+
+MUTATOR setDiamter
+IMPORTS: inDiameter
+EXPORT: None
+ALGORITHM:
+    diameter = validateDiameter<-inDiameter
+    setArea<-calcArea<-diameter
+
+MUTATOR setArea
+IMPORTS: inArea
+EXPORT: None
+ALGORITHM:
+    area = inArea
+
+
+equals
+IMPORTS: inCircle (Object)
+EXPORT: isEqual (Boolean)
+ALGORITHM:
+    isEqual = false
+    circle = (Convert to Circle) inCircle
+    IF circle.getArea == area THEN:
+        IF circle.getDiameter == diameter THEN:
+            isEqual = TRUE
+        ENDIF
+    ENDIF
+    
+toString
+IMPORTS: None
+EXPORT: circleString (String)
+ALGORITHM: 
+	circleString = "diameter: " + diameter + " area: " + area
+
+SUBMODULE: validateDiameter
+IMPORTS: diameter (Integer)
+EXPORT: diameter
+ALGORITHM:
+    IF diameter < 0 THEN:
+        FAIL "diameter cant be less than 0"
+    ENDIF
+
+SUBMODULE calcArea
+IMPORTS diameter(Integer)
+EXPORT: area(Real)
+    area = PI * ((Convert to Real)diameter/2.0)^2
+
+clone
+IMPORTS: None
+EXPORT: outCircle
+ALGORITHM: 
+	construct outCircle using this

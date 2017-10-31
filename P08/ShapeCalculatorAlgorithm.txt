@@ -1,0 +1,245 @@
+MAIN:
+	OUTPUT “enter a number from the following options”
+	OUTPUT “1. Calculate the area of a circle”
+	OUTPUT “2. Calculate the area of a rectangle”
+	OUTPUT “3. Calculate the area of a triangle”
+	OUTPUT “4.  Calculate areas from file”
+	OUTPUT “5. Exit”
+	iNPUT selection
+	CASE(selection):
+		CASE 1:
+			circleCalc
+		CASE 2:
+			rectangleCalc
+		CASE 3:
+			triangleCalc
+		CASE 4:
+			calculateFromFile
+		CASE 5:
+			exit
+		DEFAULT:
+			OUTPUT “Invalid Selection”
+	ENDCASE
+ENDMAIN
+
+SUBMODULE: circleCalc
+IMPORTS: none
+EXPORT: none
+ASSERTION:
+ALGORITHM:
+	diameter = integerInput<-“Enter the value of the diameter of the circle in cm”
+	circle<-diameter
+	OUTPUT “The area of the circle is “ + truncate<-circle<-diameter
+
+SUBMODULE: rectangleCalc
+IMPORTS: none
+EXPORT: none
+ASSERTION:
+ALGORITHM:
+	length = realInput<-“Enter the value o nth length of the rectangle in cm”
+	width = realInput<-“Enter the value of the width o the rectangle in cm”
+	OUTPUT “The area of the rectangle is “ + truncate<-rectangle<-length, width
+
+SUBMODULE: triangleCalc
+IMPORTS: none
+EXPORT: none
+ASSERTION:
+ALGORITHM:
+	base = realInput<-“Enter the value of the base of the triangle”
+	height = realInput<-“Enter the value of the height of the triangle”
+	OUTPUT “The area of the triangle is “ + truncate<-triangle<-base, height
+
+SUBMODULE: integerInput
+IMPORTS: message (String)
+EXPORT: number (Integer)
+ASSERTION:
+ALGORITHM:
+	OUTPUT message
+	INPUT number
+
+SUBMODULE: realInput
+IMPORTS: message(String)
+EXPORT: number(Real)
+ASSERTION:
+ALGORITHM:
+	OUTPUT message
+	INPUT number
+
+SUBMODULE: circle
+IMPORTS: diameter(Integer)
+EXPORT: area(Real)
+ASSERTION:
+ALGORITHM:
+	area = PI * ((Convert to Real)diameter/2.0)^2
+
+SUBMODULE: rectangle
+IMPORTS: length(Real), width(Real)
+EXPORT: area(Real)
+ASSERTION:
+ALGORITHM:
+	area = length * width
+
+SUBMODULE: triangle
+IMPORTS: base(Real), height(Real)
+EXPORT: area(Real)
+ASSERTION:
+ALGORITHM:
+	area = (0.5 * base * height)/100.0
+
+SUBMODULE: truncate
+IMPORTS: number(Real)
+EXPORT: output(String)
+ASSERTION:
+ALGORITHM:
+	m = (Convert to Integer)number DIV 10000
+	cm = (Convert to Integer)number MOD 10000
+	mm = (number - (m * 10000) - cm) * 100
+	output = m + “m, “ + cm + “cm, “ + mm + “ mm”
+
+SUBMODULE: exit
+IMPORTS: none
+EXPORT: none
+ASSERTION:
+ALGORITHM:
+	OUTPUT “GOODBYE”
+
+SUBMODULE: calculateFromFile
+IMPORTS: none
+EXPORT: none
+ASSERTION:
+ALGORITHM:
+	OUTPUT “Please provide a file name”
+	INPUT filename
+	array = getNumberOfShapes <- filename
+	IF array != null THEN:
+		rectangleArray = (ARRAY of Double SIZE of array[0])
+		triangleArray = (ARRAY of Double SIZE of array[1])
+		circleArray = (ARRAY of Double SIZE of array[2])
+		calculate<- rectangleArray, triangleArray, circleArray, filename
+		writeToFile<- filename, rectangleArray, triangleArray, circleArray
+		
+
+SUBMODULE: getNumberOfShapes
+IMPORTS: filename(String)
+EXPORT: arrayOfNumberOfShapes(SIZE OF 3)
+ASSERTION:
+ALGORITHM:
+	numRect = 0, numTri = 0, numCircle = 0
+	lineNumber = 0
+	shapeType = ‘’
+
+	file = doFileOpening<-filename
+
+	INPUT line FROM file
+	
+	WHILE (line NOT EOF) DO:
+		lineNumber = lineNumber + 1
+		Construct tokeniser USING line, ‘, ‘
+		FOR i = 0 tokeniser<-hasMoreTokens CHANGEBY 1:
+			IF i == 0 THEN:
+				shapeType = <-nextToken 
+				CASE(shapeType):
+					CASE ‘R’:
+						numRect = numRect + 1
+					CASE ‘C’:
+						numCircle = numCircle + 1
+					CASE ’T’:
+						numTri = numTri + 1
+					DEFAULT:
+						OUTPUT “Error in file format in line” + lineNumber
+						numRect = -1, numTri = -1, numCircle = -1	
+						error = true
+				ENDCASE
+			ENDIF
+		ENDFOR
+		INPUT line FROM file
+	ENDWHILE
+	CLOSEFILE file
+	arrayOfNumberOfShapes(ARRAY of integers SIZE OF 3)
+	IF error != true:
+		arrayOfNumberOfShapes[0] = numRect
+		arrayOfNumberOfShapes[1] = numTri
+		arrayOfNumberOfShapes[2] = numCircle
+	ELSE:
+		arrayOfNumberOfShapes = null
+	ENDIF
+
+SUBMODULE calculate
+IMPORTS: rectangleArray, triangleArray, circleArray, filename
+EXPORT: none
+ASSERTION:
+ALGORITHM:
+	numRect = 0, numTri = 0, numCircle = 0
+	currentShape = ‘’
+	file = doFileOpening<-filename
+	
+	INPUT line FROM file
+	WHILE (line NOT EOF) DO:
+		lineNumber = lineNumber + 1
+		Construct tokeniser USING line, ‘, ‘
+		FOR i = 0 tokeniser<-hasMoreTokens CHANGEBY 1:
+			IF i == 0 THEN:
+				shapeType = tokeniser<-nextToken 
+				CASE(shapeType):
+					CASE ‘R’:
+						currentShape = ‘r’
+						numRect = numRect + 1
+					CASE ‘C’:
+						currentShape = ‘c’
+						numCircle = numCircle + 1
+					CASE ’T’:
+						currentShape = ‘t’
+						numTri = numTri + 1
+					DEFAULT:
+						OUTPUT “Error in file format in line” + lineNumber
+						numRect = -1, numTri = -1, numCircle = -1	
+						error = true
+				ENDCASE
+			ENDIF
+			IF i != 0 THEN:
+				CASE(currentShape):
+					CASE ‘r’:
+						base = (Convert to Real)tokeniser<-nextToken
+						height = (Convert to Real)tokeniser<-nextToken
+						rectangleArray[numRect - 1] = rectangle<-base, height
+					CASE ‘c’:
+						diameter = (Convert to Integer)tokeniser<-nextToken
+						circleArray[numCircle - 1] = circle<-diameter
+					CASE ’t’:
+						base = (Convert to Real)tokeniser<-nextToken
+						height = (Convert to Real)tokeniser<-nextToken
+						triangleArray[numTri - 1]<-base, height
+				ENDCASE
+			ENDIF
+
+		ENDFOR
+		INPUT line FROM file
+	ENDWHILE
+	
+SUBMODULE: writeToFile
+IMPORTS: filename, arrayOfRectangle, arrayOfCircle, arrayOfTri
+EXPORT: none
+ASSERTION:
+ALGORITHM:
+	file = OPENFILE filename
+	FOR i = 0 TO (LENGTH OF arrayOfRectangle - 1) CHANGEBY 1:
+		OUTPUT TO file “R,”+ arrayOfRectangle[I] + “\n”
+	ENDFOR
+	FOR i = 0 TO (LENGTH OF arrayOfCircle - 1) CHANGEBY 1:
+		OUTPUT TO file “C,”+ arrayOfCircle[I] + “\n”
+	ENDFOR
+	FOR i = 0 TO (LENGTH OF arrayOfTri - 1) CHANGEBY 1:
+		OUTPUT TO file “T,”+ arrayOfTri[I] + “\n”
+	ENDFOR
+	OUTPUT “Areas writing to “ + filename + “ successfully”
+			
+	
+SUBMODULE: doFileOpening
+IMPORTS: filename(String)
+EXPORT: file
+ASSERTION:
+ALGORITHM:
+	file = OPENFILE filename
+	IF file CANT BE OPENED THEN:
+		FAIL ( THROW EXCEPTION)
+	ENDIF

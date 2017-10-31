@@ -1,0 +1,105 @@
+CLASS Triangle
+
+CLASSFIELD:
+    base (Real)
+    height (Real)
+    area (Real)
+
+DEFAULT CONSTRUCTOR:
+    base = 0.0
+    height = 0.0
+    area = 0.0
+
+ALTERNATE CONSTRUCTOR:
+IMPORTS: base (Real), height (Real)
+ALGORITHM: 
+    base = validatebase<-inbase
+    height = validateheight<-inheight
+    setArea<- calcArea <- base, height
+
+COPY CONSTRUCTOR:
+IMPORTS: inTriangle (Triangle)
+ALGORITHM:
+    base = inTriangle.getbase<-None
+    height = inTriangle.getheight<-None
+    setArea<- calcArea <- base, height
+
+ACCESSOR getArea
+IMPORTS: None
+EXPORT: area
+
+ACCESSOR getheight
+IMPORTS: None
+EXPORT: height
+
+ACCESSOR getbase
+IMPORTS: None
+EXPORT: base
+
+MUTATOR setbase
+IMPORTS inbase
+EXPORT: None
+ALGORITHM:
+    base = validatebase<-inbase
+
+MUTATOR setheight
+IMPORTS: inheight
+EXPORT: None
+ALGORITHM:
+    height - validateheight<-inheight
+
+MUTATOR setArea
+IMPORTS: inArea
+EXPORT: None
+ALGORITHM:
+    area = inArea
+
+clone
+IMPORTS: None
+EXPORT: outTriangle
+ALGORITHM: 
+	construct outTriangle using this
+
+equals
+IMPORTS: inTriangle (Object)
+EXPORT: isEqual (Boolean)
+ALGORITHM:
+    isEqual = false
+    triangle = (Convert to Triangle)inTriangle
+    IF triangle is an instance of Triangle THEN:
+        IF triangle.getArea == area THEN:
+            IF triangle.getbase == base THEN:
+                IF triangle.getheight == height THEN:
+                    isEqual = true
+                ENDIF
+            ENDIF
+        ENDIF
+    ENDIF
+
+toString
+IMPORTS: None
+EXPORT: triString (String)
+ALGORITHM: 
+	triString = "height: " + height + "base: " + base + " area: " + area
+
+SUBMODULE: calcArea
+IMPORTS: base (Real), height (Real)
+EXPORT: area
+ALGORITHM: 
+    area = (0.5 * base * height)/100.0
+
+SUBMODULE: validatebase
+IMPORTS: base (Real)
+EXPORT: base
+ALGORITHM:
+    IF base < 0 THEN:
+        FAIL "base cant be less than 0"
+    ENDIF
+
+SUBMODULE: validateheight
+IMPORTS: height (Real)
+EXPORT: height
+ALGORITHM:
+    IF height < 0 THEN:
+        FAIL "height cant be less than 0"
+    ENDIF

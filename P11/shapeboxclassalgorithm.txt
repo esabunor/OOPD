@@ -1,0 +1,173 @@
+CLASS ShapeBox
+
+CLASSFIELD:
+    const MAX_SHAPE = 10
+    shapes (Array of Shape)
+    numShapes (Integer)
+    constructed (boolean)
+
+DEFAULT CONSTRUCTOR:
+    shapes = (Array of Shapes size of MAX_SHAPE)
+    numShapes = 0
+    constructed = false
+
+ALTERNATE CONSTRUCTOR:
+IMPORTS: filename (String)
+ALGORITHM: 
+    shapes = makeShapes<-filename
+    numShapes = getNoOfLines<-filename
+    constructed = true
+
+COPY CONSTRUCTOR:
+IMPORTS: shapeBox (ShapeBox)
+ALGORITHM:
+    shapes = shapeBox.getShapes
+    numShapes = shapeBox.getNumShapes
+    constructed = shapeBox.isConstructed
+
+ACCESSOR isConstructed
+IMPORTS: None
+EXPORT: constructed
+
+ACCESSOR getShapes
+IMPORTS: None
+EXPORT: copyShapes (Array of Shape)
+ALGORITHM:
+    FOR i = 0 TO numShapes (inclusive) CHANGE BY 1:
+        copyShapes[i]= shapes[i].clone
+    ENDFOR
+
+ACCESSOR getNumShapes
+IMPORTS: None
+EXPORT: numShapes
+
+MUTATOR setShapes
+IMPORTS inshapes
+EXPORT: None
+ALGORITHM:
+    FOR i = 0 TO numShapes CHANGE BY 1:
+        shapes[i]= inshapes[i].clone
+    ENDFOR
+
+MUTATOR setNumShapes
+IMPORTS innumShapes
+EXPORT: None
+ALGORITHM:
+    numShapes = innumShapes
+
+SUBMODULE: addShape
+IMPORTS: inshape (Shape)
+EXPORT: None
+ALGORITHM:
+    IF not constructed THEN:
+        FAIL "Shapes has not been constructed"
+    ENDIF
+    numShapes = numShapes + 1
+    shapes[numShapes] = inshape
+
+SUBMODULE: makeShapes
+IMPORTS: filename (String)
+EXPORT: shape (Shape)
+ALGORITHM:
+    outShape = (Array of Shape size of MAX_SHAPE)
+	shapeType = ‘’
+	file = doFileOpening<-filename
+	lineNumber = 0
+	INPUT line FROM file
+	WHILE (line NOT EOF) DO:
+		tokens = line.split<-","
+        shapeType = tokens[0].charAt<-0
+            CASE(shapeType):
+                CASE ‘R’:
+                    shapes[lineNo] = constructRectangle<-tokens
+                CASE ‘C’:
+                    shapes[lineNo] = constructCircle-tokens
+                CASE ’T’:
+                    shapes[lineNo] = constructTriangle<-tokens
+                DEFAULT:
+                    OUTPUT “Error in file format in line” + lineNumber
+            ENDCASE
+		lineNumber = lineNumber + 1
+		INPUT line FROM file
+	ENDWHILE
+
+SUBMODULE: doFileOpening
+IMPORTS: filename(String)
+EXPORT: file
+ASSERTION:
+ALGORITHM:
+	file = OPENFILE filename
+	IF file CANT BE OPENED THEN:
+		FAIL ( THROW EXCEPTION)
+	ENDIF
+
+SUBMODULE: constructRectangle
+IMPORTS: tokens (Array of String)
+EXPORT: shape (Rectangle)
+ALGORITHM:
+    length = (Convert to Real) tokens[1]
+    width = (Convert to Real) tokens[2]
+    shape = construct Rectangle using length, width
+
+SUBMODULE: constructCircle
+IMPORTS: tokens (Array of String)
+EXPORT: shape (Circle)
+ALGORITHM:
+    diameter = (Convert to Integer) tokens[1]
+    shape = construct Circle using diameter
+
+SUBMODULE: constructTriangle
+IMPORTS: tokens (Array of String)
+EXPORT: shape (Triangle)
+ALGORITHM:
+    base = (Convert to Real) tokens[1]
+    height = (Convert to Real) tokens[2]
+    shape = construct Triangle using base, height
+
+SUBMODULE: getNoOfLines
+IMPORTS: filename (String)
+EXPORT: lineNumber (Integer)
+ALGORITHM:
+    
+	file = doFileOpening<-filename
+	
+	INPUT line FROM file
+	WHILE (line NOT EOF) DO:
+		lineNumber = lineNumber + 1
+		INPUT line FROM file
+	ENDWHILE
+
+SUBMODULE: clone
+IMPORTS: none
+EXPORT: shape (ShapeBox)
+ALGORITHM:
+    construct shape using this
+
+SUBMODULE: toString
+IMPORTS: None
+EXPORT: outString (String)
+ALGORITHM:
+    outString = ""
+    FOR i = 0 TO numShapes CHANGE BY 1:
+        outString = outString + "\n" + shapes[i].toString
+    ENDFOR
+
+SUBMODULE: equals
+IMPORTS: obj (Object)
+EXPORT: isEquals (boolean)
+ALGORITHM:
+    isEquals = false
+    sBox = (Convert to ShapeBox) obj
+    IF numShapes == sBox.getNumShapes THEN:
+        IF constructed == sBox.isConstructed THEN:
+            shapesEquals = true
+            FOR i = 0 TO numShapes and shapesEquals CHANGE BY 1:
+                IF not sBox.getShapes[i].equals<-shapes[i] THEN:
+                    shapesEquals = false
+                ENDIF
+        
+            ENDFOR
+        ENDIF
+    ENDIF
+
+    
