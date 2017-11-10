@@ -18,7 +18,7 @@ public class Question1
 	
 	/***************************************************************
     *Purpose: To processes each line                              *
-    *Date: Tues 15th Septem                                        *
+    *Date: Tues 15th September                                     *
     *Import: none                                                  *
     *Export: none                                                  *
     *Assertion:                                                    *
@@ -39,7 +39,7 @@ public class Question1
 	
 	/***************************************************************
     *Purpose: To get the number of lines in the file              *
-    *Date: Tues 15th Septem                                        *
+    *Date: Tues 15th September                                     *
     *Import: filename                                              *
     *Export: none                                                  *
     *Assertion:                                                    *
@@ -75,7 +75,7 @@ public class Question1
 	
 	/***************************************************************
     *Purpose: To populate arrayofnames and arrayofscores            *
-    *Date: Tues 15th Septem                                        *
+    *Date: Tues 15th September                                        *
     *Import: arry of name and arr of scores                        *
     *Export: none                                                  *
     *Assertion:                                                    *
@@ -111,7 +111,7 @@ public class Question1
 	
 	/***************************************************************
     *Purpose: Displays the programs menu                           *
-    *Date: Tues 15th Septem                                        *
+    *Date: Tues 15th September                                       *
     *Import: arry of name and arr of scores                                                    *
     *Export: none                                                  *
     *Assertion:                                                    *
@@ -128,7 +128,7 @@ public class Question1
 	
 	/***************************************************************
     *Purpose: To search the file for a name                        *
-    *Date: Tues 15th Septem                                        *
+    *Date: Tues 15th September                                        *
     *Import: arry of name and arr of scores                        *
     *Export: none                                                  *
     *Assertion:                                                    *
@@ -154,7 +154,7 @@ public class Question1
 	
 	/***************************************************************
     *Purpose: To validate users menu selection input               *
-    *Date: Tues 15th Septem                                        *
+    *Date: Tues 15th September                                        *
     *Import: arry of name and arr of scores                        *
     *Export: none                                                  *
     *Assertion:                                                    *
